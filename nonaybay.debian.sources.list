@@ -1,0 +1,91 @@
+#!/usr/bin/bash
+
+currentrelease="$1"
+repomirror="http://http.debian.net/debian"
+repobranch="$1"
+repocomponent="main"
+sources="/etc/apt/sources.list"
+
+
+# ===== Remove current sources
+clear && sleep 1 && printf "\nRemoving current sources.list located at ${sources}\n\n"
+rm -fv ${sources} && printf "\nDone!\n\n"
+sleep 2
+
+
+# ===== My way to get the release name
+clear && sleep 1 && printf "\nTesting with ${currentrelease}...\n\n"
+echo "deb ${repomirror} ${repobranch} ${repocomponent}" >> ${sources}
+apt-get update && apt-get reinstall base-files && printf "\nDone!\n\n"
+sleep 2
+
+
+# ===== Store new values
+clear && sleep 1 && printf "\nStoring new values...\n\n"
+oldrepobranch=$repobranch
+repobranch="$(lsb_release -sc)"
+oldrepocomponent=$repocomponent
+repocomponent="main contrib non-free"
+printf "\nChanged repo branch from [ ${oldrepobranch} ] to [ ${repobranch} ]" && sleep 1
+printf "\nChanged repo components from [ ${oldrepocomponent} ] to [ ${repocomponent} ]\n" && printf "\nDone!\n\n"
+sleep 2
+
+
+# ===== Add new repos
+clear && sleep 1 && printf "\nAdding final repositories...\n\n"
+rm -f ${sources} && sleep 1 && printf "\n"
+
+
+if [[ $oldrepobranch == "stable" ]]; then
+
+    echo "deb       ${repomirror}           ${repobranch}                           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-updates                   ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-proposed-updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-backports                 ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-backports-sloppy          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-debug     ${repobranch}-debug                     ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-debug     ${repobranch}-proposed-updates-debug    ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-debug     ${repobranch}-backports-debug           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-security  ${repobranch}-security/updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}                           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-updates                   ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-proposed-updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-backports                 ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-backports-sloppy          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-debug     ${repobranch}-debug                     ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-debug     ${repobranch}-proposed-updates-debug    ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-debug     ${repobranch}-backports-debug           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-security  ${repobranch}-security/updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+
+fi
+
+
+if [[ $oldrepobranch == "testing" ]]; then
+
+    echo "deb       ${repomirror}           ${repobranch}                           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-updates                   ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-proposed-updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}           ${repobranch}-backports                 ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-debug     ${repobranch}-debug                     ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-debug     ${repobranch}-proposed-updates-debug    ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-debug     ${repobranch}-backports-debug           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb       ${repomirror}-security  ${repobranch}-security/updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}                           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-updates                   ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-proposed-updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}           ${repobranch}-backports                 ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-debug     ${repobranch}-debug                     ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-debug     ${repobranch}-proposed-updates-debug    ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-debug     ${repobranch}-backports-debug           ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+    echo "deb-src   ${repomirror}-security  ${repobranch}-security/updates          ${repocomponent}" >> ${sources} && sleep 0.5 && echo "."
+
+fi
+
+
+apt-get update && printf "\nDone!\n\n"
+sleep 2
+
+
+
+# ===== End
+clear && sleep 1 && printf "\nDone, exiting\n\n"
